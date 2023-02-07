@@ -1,0 +1,128 @@
+# SPIRAL LINKED LIST
+class Solution:
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        q = []
+        while head:
+            q.append(head)
+            head = head.next
+        p = dummy = ListNode(0)
+
+        while len(q)>1:
+            h = q.pop(0)
+            t = q.pop()
+            p.next = h
+            h.next = t
+            p = t
+            p.next = None
+        
+        if q: 
+            p.next = q.pop()
+            p = p.next
+            p.next = None
+            
+        return dummy.next
+# REVERSE A STRING USING STACK
+def createStack():
+    stack = []
+    return stack
+def size(stack):
+    return len(stack)
+def isEmpty(stack):
+    if size(stack) == 0:
+        return true
+def push(stack, item):
+    stack.append(item)
+def pop(stack):
+    if isEmpty(stack):
+        return
+    return stack.pop()
+def reverse(string):
+    n = len(string)
+    stack = createStack()
+    for i in range(0, n, 1):
+        push(stack, string[i])
+    string = ""
+    for i in range(0, n, 1):
+        string += pop(stack)
+ 
+    return string
+# VALID PARANTHESES
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        stack = []
+        for c in s:
+            if c in ['(', '{', '[']:
+                stack.append(c)
+            elif c == ')' and len(stack) != 0 and stack[-1] == '(':
+                stack.pop()
+            elif c == '}' and len(stack) != 0 and stack[-1] == '{':
+                stack.pop()
+            elif c == ']' and len(stack) != 0 and stack[-1] == '[':
+                stack.pop()
+            else:
+                return False
+        return stack == []
+# SCORE OF PARANTHESES
+class Solution(object):
+    def scoreOfParentheses(self, S):
+        stack = [0]
+        for x in S:
+            if x == '(':
+                stack.append(0)
+            else:
+                v = stack.pop()
+                stack[-1] += max(2 * v, 1)
+
+        return stack.pop()
+# NEXT GREATER ELEMENT
+from collections import deque
+class Solution:
+    def nextLargerElement(self,arr,n):
+        s = deque()
+        res =[0]*n
+        for i in range(n-1,-1,-1):
+            while (len(s) and s[-1] <= arr[i]):
+                s.pop()
+            if (not len(s)):
+                res[i] = -1
+            else:
+                res[i] = s[-1]
+            s.append(arr[i])
+        return res
+# NEXT GREATER ELEMENT IN A CIRCULAR ARRAY
+class Solution:
+  def nextGreaterElements(self, nums: List[int]) -> List[int]:
+    n = len(nums)
+    ans = [-1] * n
+    stack = []
+
+    for i in range(n * 2):
+      num = nums[i % n]
+      while stack and nums[stack[-1]] < num:
+        ans[stack.pop()] = num
+      if i < n:
+        stack.append(i)
+
+    return ans
+# REMOVE DUPLICATE LETTERS
+class Solution:
+  def removeDuplicateLetters(self, s: str) -> str:
+    ans = []
+    count = collections.Counter(s)
+    used = [False] * 26
+
+    for c in s:
+      count[c] -= 1
+      if used[ord(c) - ord('a')]:
+        continue
+      while ans and ans[-1] > c and count[ans[-1]] > 0:
+        used[ord(ans[-1]) - ord('a')] = False
+        ans.pop()
+      ans.append(c)
+      used[ord(ans[-1]) - ord('a')] = True
+
+    return ''.join(ans)
